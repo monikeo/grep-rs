@@ -21,3 +21,14 @@ learn to cloning the grep tool in cli
 - regex_util.rs : Utility functions for different regex modes (basic, extended,
   etc.)
 - output.rs : Handle output formatting (e.g., line numbers, file names, etc.).
+
+# 4. Define the Arguments Structure
+- Make pattern and files required: ensure that a pattern is provided, and at least one file should be specified.
+- Convert options to booleans: Some flags like ignore_case, recursive, line_number, and invert_match should be bool since they represent the presence or absence of an option
+- pattern and files are required arguments, and the boolean flags (ignore_case, recursive, line_number, and invert_match) will default to false if not specified.
+
+# 5.Implement the Search Logic
+- Handle Pattern Matching: We will use the regex crate to match the pattern in the files. If the ignore_case flag is set, we'll compile the regex with case insensitivity.
+- Read Files: You will need to read files line by line. If recursive is set, you should search through all files in directories recursively.
+- Invert Matches: If invert_match is true, we will show lines that do not match the pattern.
+- Show Line Numbers: If line_number is true, we will display the line number for each match.
