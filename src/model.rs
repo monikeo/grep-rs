@@ -2,15 +2,15 @@ use crate::file::{
     FileError,
     FileHandling
 };
-use std::path::{
-    Path, PathBuf
-};
+use std::path::PathBuf;
 
 pub struct Config {
     query: String,
     file_path: String,
     ignore_case: bool,
     line_number: bool,
+    recursive: bool,
+    invert_match: bool,
 }
 
 impl Config {
@@ -19,16 +19,38 @@ impl Config {
             query: query.to_string(),
             file_path: file_path.to_string(),
             ignore_case: false,
-            line_number: false
+            line_number: false,
+            recursive: false,
+            invert_match: false
         }
     }
 
     pub fn set_ignore_case(&mut self, flag: bool) {
         self.ignore_case = flag;
     }
+    pub fn get_ignore_case(&self) -> bool {
+        self.ignore_case
+    }
 
     pub fn set_line_number(&mut self, flag: bool) {
         self.line_number = flag;
+    }
+    pub fn get_line_number(&self) -> bool {
+        self.line_number
+    }
+
+    pub fn set_recursive(&mut self, flag: bool) {
+        self.recursive = flag;
+    }
+    pub fn get_recursive(&self) -> bool {
+        self.recursive
+    }
+    
+    pub fn invert_match(&mut self, flag: bool) {
+        self.invert_match = flag;
+    }
+    pub fn get_invert_match(&self) -> bool {
+        self.invert_match
     }
 
     pub fn get_query(&self) -> &str {
