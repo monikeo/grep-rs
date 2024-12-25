@@ -32,3 +32,21 @@ learn to cloning the grep tool in cli
 - Read Files: You will need to read files line by line. If recursive is set, you should search through all files in directories recursively.
 - Invert Matches: If invert_match is true, we will show lines that do not match the pattern.
 - Show Line Numbers: If line_number is true, we will display the line number for each match.
+
+# 6. CLI Options and Functionality
+1. Pattern (-p or --pattern)
+    - The string or regex to search for in the files.
+2. File (-f or --file)
+    - Single file to search
+3. Files (-F or --files)
+    - Multiple files to search
+4. Ignore Case (-i or --ignore-case)
+    - Perform case-insensitive search
+5. Recursive (-R or --recursive)
+    - Search directories recursively
+6. Line Number (-n or --line-number)
+    - Display line numbers in the results
+7. Invert Match (-v or --invert-match)
+    - Invert the pattern match logic
+
+# 7. CLI Example
