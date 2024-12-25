@@ -9,7 +9,7 @@ use clap::Parser;
     long_about = None)]
 pub struct Args {
     #[arg(short, long, help="The pattern to search for")]
-    pattern: Option<String>,
+    pattern: String,
     #[arg(short='f', long="file", help="The file to search")]
     file: Option<String>,
     #[arg(short='F', long="files", help="The files to search")]
@@ -37,8 +37,11 @@ pub struct Args {
 }
 
 impl Args {
-    pub fn get_pattern(&self) -> Option<&String> {
-        self.pattern.as_ref()
+    pub fn parse_args() -> Self {
+        Self::parse()
+    }
+    pub fn get_pattern(&self) -> &str {
+        &self.pattern
     }
     pub fn get_file(&self) -> Option<&String> {
         self.file.as_ref()

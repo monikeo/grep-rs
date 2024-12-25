@@ -1,10 +1,12 @@
 mod cli;
 mod file;
+mod search;
+mod recursive;
 use cli::Args;
 
 use clap::Parser;
 
 fn main() {
-    let args = Args::parse();
+    let args = Args::parse_args();
     println!("{:?}", args);
 }
