@@ -83,6 +83,10 @@ mod tests {
         let config = Config::new(query, file_path);
         assert_eq!(query, config.get_query());
         assert_eq!(file_path, config.get_file_path());
+        assert!(!config.get_recursive());
+        assert!(!config.get_ignore_case());
+        assert!(!config.get_line_number());
+        assert!(!config.get_invert_match());
 
         let validate_path = config.validate_path();
         let read_lines = config.read_lines();
