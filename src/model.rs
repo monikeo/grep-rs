@@ -9,14 +9,26 @@ use std::path::{
 pub struct Config {
     query: String,
     file_path: String,
+    ignore_case: bool,
+    line_number: bool,
 }
 
 impl Config {
     pub fn new(query: &str, file_path: &str) -> Self {
         Self {
             query: query.to_string(),
-            file_path: file_path.to_string()
+            file_path: file_path.to_string(),
+            ignore_case: false,
+            line_number: false
         }
+    }
+
+    pub fn set_ignore_case(&mut self, flag: bool) {
+        self.ignore_case = flag;
+    }
+
+    pub fn set_line_number(&mut self, flag: bool) {
+        self.line_number = flag;
     }
 
     pub fn get_query(&self) -> &str {
@@ -32,6 +44,9 @@ impl Config {
     }
     pub fn read_lines(&self) -> Result<Vec<String>, FileError> {
         FileHandling::read_lines(&self.file_path)
+    }
+    pub fn read_multiple_files() {
+        todo!()
     }
 }
 

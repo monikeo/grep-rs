@@ -19,7 +19,7 @@ pub struct Args {
         default_value="false",
         help="Ignore case distinctions")]
     ignore_case: bool,
-    #[arg(short='r',
+    #[arg(short='R',
         long="recursive",
         default_value="false",
         help="Search directories recursively")]
@@ -58,4 +58,5 @@ impl Args {
     pub fn get_invert_match(&self) -> bool {
         self.invert_match
     }
+
 }

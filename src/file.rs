@@ -25,7 +25,7 @@ pub mod FileHandling {
         if !path.exists() {
             return Err(FileError::NotFound(path.to_string_lossy().to_string()));
         }
-        if !path.is_file() {
+        if !path.metadata()?.is_file() {
             return Err(FileError::InvalidPath(path.to_string_lossy().to_string()));
         }
         let file = fs::canonicalize(path);
