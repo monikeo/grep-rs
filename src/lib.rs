@@ -1,6 +1,8 @@
 use std::process;
 pub mod file;
 pub mod model;
+pub mod search;
+pub mod recursive;
 use model::Config;
 
 pub fn error_exit(message: &str) {
