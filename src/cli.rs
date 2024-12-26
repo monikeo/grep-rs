@@ -14,6 +14,8 @@ pub struct Args {
     file: Option<String>,
     #[arg(short='F', long="files", help="The files to search")]
     files: Option<Vec<String>>,
+    #[arg(short='d', long="directory", help="The directory to recursively search")]
+    directory: Option<String>,
     #[arg(short='i', 
         long="ignore-case", 
         default_value="false",
@@ -48,6 +50,9 @@ impl Args {
     }
     pub fn get_files(&self) -> Option<&Vec<String>> {
         self.files.as_ref()
+    }
+    pub fn get_directory(&self) -> Option<&String> {
+        self.directory.as_ref()
     }
     pub fn get_ignore_case(&self) -> bool {
         self.ignore_case

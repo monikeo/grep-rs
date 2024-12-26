@@ -20,8 +20,8 @@ pub mod FileHandling {
     use std::fs;
     use super::*;
 
-    pub fn validate_path(path: &str) -> Result<PathBuf, FileError> {
-        let path = std::path::Path::new(path);
+    pub fn validate_path(path: &PathBuf) -> Result<PathBuf, FileError> {
+        //let path = std::path::Path::new(path);
         if !path.exists() {
             return Err(FileError::NotFound(path.to_string_lossy().to_string()));
         }
@@ -36,12 +36,23 @@ pub mod FileHandling {
         
     }
 
-    pub fn read_file(path: &str) -> Result<String, FileError> {
+    pub fn validate_paths(paths: Vec<&PathBuf>) -> Vec<Result<PathBuf, FileError>> {
+        paths
+            .into_iter()
+            .map(|path| validate_path(path))
+            .collect()
+    }
+
+    pub fn is_dir(path: &str) -> bool {
+        Path::new(path).is_dir()
+    }
+
+    pub fn read_file(path: &PathBuf) -> Result<String, FileError> {
         let path = self::validate_path(path)?;
         fs::read_to_string(path).map_err(FileError::from)
     }
 
-    pub fn read_lines(path: &str) -> Result<Vec<String>, FileError> {
+    pub fn read_lines(path: &PathBuf) -> Result<Vec<String>, FileError> {
         let content = self::read_file(path)?;
         let lines: Vec<String> = content
             .lines()
@@ -49,44 +60,49 @@ pub mod FileHandling {
             .collect();
         Ok(lines)
     }
-
-
 }
 
 #[cfg(test)]
 mod tests{
     use super::*;
+    use std::path::Path;
 
     #[test]
     fn test_validate_path() {
         let path = "./src/main.rs";
-        let result = FileHandling::validate_path(path);
+        let path = Path::new(path).to_path_buf();
+        let result = FileHandling::validate_path(&path);
         assert!(result.is_ok());
         
         let path = "./src/nofile_wrong_resutl.rs23434";
-        let result = FileHandling::validate_path(path);
+        let path = Path::new(path).to_path_buf();
+        let result = FileHandling::validate_path(&path);
         assert!(!result.is_ok());
     }
 
     #[test]
     fn test_read_file() {
         let path = "./src/main.rs";
-        let result = FileHandling::read_file(path);
+        let path = Path::new(path).to_path_buf();
+        let result = FileHandling::read_file(&path);
         assert!(result.is_ok());
 
         let path = "./src/nofile_wrong_result.rs23434";
-        let result = FileHandling::read_file(path);
+        let path = Path::new(path).to_path_buf();
+        let result = FileHandling::read_file(&path);
         assert!(!result.is_ok());
     }
 
     #[test]
     fn test_read_lines() {
         let path = "./src/main.rs";
-        let result = FileHandling::read_lines(path);
+        let path = Path::new(path).to_path_buf();
+        let result = FileHandling::read_lines(&path);
         assert!(result.is_ok());
 
         let path = "./src/nofile_wrong_result.rs23434";
-        let result = FileHandling::read_lines(path);
+        let path = Path::new(path).to_path_buf();
+        let result = FileHandling::read_lines(&path);
         assert!(!result.is_ok());
     }
 }

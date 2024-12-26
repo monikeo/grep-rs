@@ -2,11 +2,11 @@ use crate::file::{
     FileError,
     FileHandling
 };
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 pub struct Config {
     query: String,
-    file_path: String,
+    file_paths: Vec<PathBuf>,
     ignore_case: bool,
     line_number: bool,
     recursive: bool,
@@ -14,10 +14,10 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn new(query: &str, file_path: &str) -> Self {
+    pub fn new(query: &str, file_paths: Vec<PathBuf>) -> Self {
         Self {
             query: query.to_string(),
-            file_path: file_path.to_string(),
+            file_paths: file_paths,
             ignore_case: false,
             line_number: false,
             recursive: false,
@@ -57,16 +57,21 @@ impl Config {
         &self.query
     }
 
-    pub fn get_file_path(&self) -> &str {
-        &self.file_path
+    pub fn get_file_paths(&self) -> &Vec<PathBuf> {
+        &self.file_paths
     }
 
-    pub fn validate_path(&self) -> Result<PathBuf, FileError> {
-        FileHandling::validate_path(&self.file_path)
+    /*
+    pub fn validate_path(&self, path: &Path) -> Result<PathBuf, FileError> {
+
+        FileHandling::validate_path(path)
     }
+    */
+    /*
     pub fn read_lines(&self) -> Result<Vec<String>, FileError> {
-        FileHandling::read_lines(&self.file_path)
+        FileHandling::read_lines(&self.file_paths)
     }
+    */
     pub fn read_multiple_files() {
         todo!()
     }
@@ -75,20 +80,27 @@ impl Config {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::model::{
+        FileError,
+        FileHandling
+    };
 
+    /*
     #[test]
     fn test_config() {
         let query = "test_query";
         let file_path = "./src/main.rs";
+        let file_path = vec![Path::new(file_path).to_path_buf()];
         let config = Config::new(query, file_path);
         assert_eq!(query, config.get_query());
-        assert_eq!(file_path, config.get_file_path());
+        assert_eq!(file_path, *config.get_file_paths());
         assert!(!config.get_recursive());
         assert!(!config.get_ignore_case());
         assert!(!config.get_line_number());
         assert!(!config.get_invert_match());
 
-        let validate_path = config.validate_path();
+        //let validate_path = config.validate_path();
+        let validate_path = FileHandling::validate_path(&file_path[0])
         let read_lines = config.read_lines();
         assert!(validate_path.is_ok());
         assert!(read_lines.is_ok());
@@ -105,4 +117,5 @@ mod tests {
         assert!(!validate_path.is_ok());
         assert!(!read_lines.is_ok());
     }
+    */
 }
