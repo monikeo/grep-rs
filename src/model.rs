@@ -2,8 +2,10 @@ use crate::file::{
     FileError,
     FileHandling
 };
+use crate::cli::Args;
 use std::path::{Path, PathBuf};
 
+#[derive(Debug)]
 pub struct Config {
     query: String,
     file_paths: Vec<PathBuf>,
@@ -23,6 +25,9 @@ impl Config {
             recursive: false,
             invert_match: false
         }
+    }
+    pub fn build(args: &Args) {
+
     }
 
     pub fn set_ignore_case(&mut self, flag: bool) {
@@ -46,7 +51,7 @@ impl Config {
         self.recursive
     }
     
-    pub fn invert_match(&mut self, flag: bool) {
+    pub fn set_invert_match(&mut self, flag: bool) {
         self.invert_match = flag;
     }
     pub fn get_invert_match(&self) -> bool {

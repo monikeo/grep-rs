@@ -76,6 +76,19 @@ pub fn search_lines(config: &Config) -> HashMap<PathBuf, Result<Vec<String>, Fil
 mod tests {
     use super::*;
     use std::path::Path;
+    use regex::Regex;
+
+    #[test]
+    fn test_search_lines_with_file() {
+        let file_path = "./src/main.rs";
+        let path = Path::new(file_path).to_path_buf();
+        let pattern = "fn";
+        let regex = Regex::new(pattern).unwrap();
+        let line_number = true;
+        let invert_match = true;
+        let result = search_lines_with_file(&regex, &path, line_number, invert_match);
+        println!("{:#?}", result);
+    }
 
     #[test]
     fn test_search_lines() {

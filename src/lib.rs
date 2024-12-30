@@ -1,4 +1,5 @@
 use std::process;
+pub mod cli;
 pub mod file;
 pub mod model;
 pub mod search;
