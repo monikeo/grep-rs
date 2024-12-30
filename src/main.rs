@@ -23,7 +23,15 @@ fn run(args: Args) {
     let config = build_config(&args, query, files);
     let result = search_lines(&config);
 
-    println!("{:#?}", result);
+    for (key, values) in result {
+        if values.is_ok() {
+            println!("|  {}", key.to_string_lossy());
+            for value in values.unwrap() {
+                println!("|  {}", value);
+            }
+        }
+        println!();
+    }
 }
 
 fn build_config(args: &Args, query: &str, files: Vec<PathBuf> ) -> Config {
