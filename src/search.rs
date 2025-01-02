@@ -1,8 +1,5 @@
+use crate::file::{FileError, FileHandling};
 use crate::model::Config;
-use crate::file::{
-    FileError,
-    FileHandling
-};
 use std::collections::HashMap;
 use std::path::PathBuf;
 
@@ -20,23 +17,26 @@ use regex::Regex;
 /// - `Ok(Vec<String>)`: Matching lines from the file.
 /// - `Err(FileError)`: Any errors encountered while reading the file.
 pub fn search_lines_with_file(
-    regex: &Regex, 
-    path: &PathBuf, 
-    line_number: bool, 
-    invert_match: bool
+    regex: &Regex,
+    path: &PathBuf,
+    line_number: bool,
+    invert_match: bool,
 ) -> Result<Vec<String>, FileError> {
     let lines = FileHandling::read_lines(path)?;
     let matched_lines = lines
         .iter()
         .enumerate()
         .filter(|(_, line)| regex.is_match(line) != invert_match)
-        .map(|(index, line)| {
-            if line_number {
-                format!("{}: {}", index + 1, line)
-            } else {
-                line.to_string()
-            }
-        }).collect();
+        .map(
+            |(index, line)| {
+                if line_number {
+                    format!("{}: {}", index + 1, line)
+                } else {
+                    line.to_string()
+                }
+            },
+        )
+        .collect();
 
     Ok(matched_lines)
 }
@@ -56,27 +56,26 @@ pub fn search_lines(config: &Config) -> HashMap<PathBuf, Result<Vec<String>, Fil
     };
 
     let path_bufs = config.get_file_paths();
-    
+
     let mut results: HashMap<PathBuf, Result<Vec<String>, FileError>> = HashMap::new();
 
     for path in path_bufs {
         let result = search_lines_with_file(
-            &regex, 
-            path, 
-            config.get_line_number(), 
-            config.get_invert_match()
+            &regex,
+            path,
+            config.get_line_number(),
+            config.get_invert_match(),
         );
         results.insert(path.clone(), result);
     }
     results
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::path::Path;
     use regex::Regex;
+    use std::path::Path;
 
     #[test]
     fn test_search_lines_with_file() {

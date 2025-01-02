@@ -1,49 +1,66 @@
 pub mod cli;
 pub mod file;
 pub mod model;
-pub mod search;
 pub mod recursive;
+pub mod search;
 use cli::Args;
-use file::FileHandling;
+use file::{FileError, FileHandling};
 use recursive::find_files_recursively;
 
-use std::process;
 use std::path::PathBuf;
+use std::process;
 
 pub fn error_exit(message: &str) {
     println!(" [-] ERROR: {}", message);
     process::exit(0x0100);
 }
 
-pub fn get_file_paths(args: &Args) -> Vec<PathBuf>{
+/// Retrieves file paths based on CLI arguments.
+///
+/// # Arguments
+/// * `args` - Parsed CLI arguments.
+///
+/// # Returns
+/// A vector of file paths or an error message.
+pub fn get_file_paths(args: &Args) -> Result<Vec<PathBuf>, String> {
     if args.get_recursive() && args.get_directory().is_some() {
-        if args.get_file().is_some() || args.get_files().is_some() {
-            let message = "You cannot specify both file search and recursive at the same time.";
-            error_exit(message);
-        }
-        let directory = args.get_directory().unwrap();
-        if FileHandling::is_dir(directory) {
-            find_files_recursively(directory)
-        } else {
-            Vec::new()
-        }
+        handle_recursive(args)
     } else if let Some(file) = args.get_file() {
-        vec![file.into()]
+        Ok(vec![file.into()])
     } else if let Some(files) = args.get_files() {
-        files.into_iter().map(Into::into).collect()
+        Ok(files.into_iter().map(Into::into).collect())
     } else {
-        let message = "No file or files specified. Use `--file` or `--files` to provide input.";
-        error_exit(message);
-        Vec::new()
+        Err("No file or files specified. Use `--file` or `--files` to provide input.".into())
     }
 }
+
+/// Handles recursive file searching logic.
+///
+/// # Arguments
+/// * `args` - Parsed CLI arguments.
+///
+/// # Returns
+/// A vector of file paths or an error message.
+pub fn handle_recursive(args: &Args) -> Result<Vec<PathBuf>, String> {
+    if args.get_file().is_some() || args.get_files().is_some() {
+        return Err("You cannot specify both file search and recursive at the same time.".into())
+    }
+    if let Some(directory) = args.get_directory() {
+        if FileHandling::is_dir(directory) {
+            Ok(find_files_recursively(directory))
+        } else {
+            Err(format!("Provided directory '{}' is not valid.", directory))
+        }
+    } else {
+        Err("Recursive search requires a directory. Use `--directory` to specify one.".into())
+    }
+}
+
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn test() {
-
-    }
+    fn test() {}
 }

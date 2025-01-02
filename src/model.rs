@@ -1,8 +1,5 @@
-use crate::file::{
-    FileError,
-    FileHandling
-};
 use crate::cli::Args;
+use crate::file::{FileError, FileHandling};
 use std::path::{Path, PathBuf};
 
 #[derive(Debug)]
@@ -23,12 +20,10 @@ impl Config {
             ignore_case: false,
             line_number: false,
             recursive: false,
-            invert_match: false
+            invert_match: false,
         }
     }
-    pub fn build(args: &Args) {
-
-    }
+    pub fn build(args: &Args) {}
 
     pub fn set_ignore_case(&mut self, flag: bool) {
         self.ignore_case = flag;
@@ -50,7 +45,7 @@ impl Config {
     pub fn get_recursive(&self) -> bool {
         self.recursive
     }
-    
+
     pub fn set_invert_match(&mut self, flag: bool) {
         self.invert_match = flag;
     }
@@ -85,10 +80,7 @@ impl Config {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::model::{
-        FileError,
-        FileHandling
-    };
+    use crate::model::{FileError, FileHandling};
 
     /*
     #[test]

@@ -11,7 +11,8 @@ pub fn find_files_recursively(directory: &str) -> Vec<PathBuf> {
             } else {
                 None
             }
-        }).collect()
+        })
+        .collect()
 }
 
 #[cfg(test)]

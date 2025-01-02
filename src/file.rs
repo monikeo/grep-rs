@@ -9,16 +9,13 @@ pub enum FileError {
     #[error("Invalid file path: {0}")]
     InvalidPath(String),
     #[error("I/O error: {0}")]
-    IoError(#[from] std::io::Error)
+    IoError(#[from] std::io::Error),
 }
 
 pub mod FileHandling {
-    use std::path::{
-        Path,
-        PathBuf
-    };
-    use std::fs;
     use super::*;
+    use std::fs;
+    use std::path::{Path, PathBuf};
 
     pub fn validate_path(path: &PathBuf) -> Result<PathBuf, FileError> {
         //let path = std::path::Path::new(path);
@@ -31,16 +28,12 @@ pub mod FileHandling {
         let file = fs::canonicalize(path);
         match file {
             Ok(path_buf) => Ok(path_buf),
-            Err(err) => Err(FileError::IoError(err))
+            Err(err) => Err(FileError::IoError(err)),
         }
-        
     }
 
     pub fn validate_paths(paths: Vec<&PathBuf>) -> Vec<Result<PathBuf, FileError>> {
-        paths
-            .into_iter()
-            .map(|path| validate_path(path))
-            .collect()
+        paths.into_iter().map(|path| validate_path(path)).collect()
     }
 
     pub fn is_dir(path: &str) -> bool {
@@ -54,16 +47,13 @@ pub mod FileHandling {
 
     pub fn read_lines(path: &PathBuf) -> Result<Vec<String>, FileError> {
         let content = self::read_file(path)?;
-        let lines: Vec<String> = content
-            .lines()
-            .map(|line| line.to_string())
-            .collect();
+        let lines: Vec<String> = content.lines().map(|line| line.to_string()).collect();
         Ok(lines)
     }
 }
 
 #[cfg(test)]
-mod tests{
+mod tests {
     use super::*;
     use std::path::Path;
 
@@ -73,7 +63,7 @@ mod tests{
         let path = Path::new(path).to_path_buf();
         let result = FileHandling::validate_path(&path);
         assert!(result.is_ok());
-        
+
         let path = "./src/nofile_wrong_resutl.rs23434";
         let path = Path::new(path).to_path_buf();
         let result = FileHandling::validate_path(&path);

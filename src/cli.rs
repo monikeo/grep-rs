@@ -8,34 +8,37 @@ use clap::Parser;
     author="Keo Moni",
     long_about = None)]
 pub struct Args {
-    #[arg(short, long, help="The pattern to search for")]
+    #[arg(short, long, help = "The pattern to search for")]
     pattern: String,
-    #[arg(short='f', long="file", help="The file to search")]
+    #[arg(short = 'f', long = "file", help = "The file to search")]
     file: Option<String>,
-    #[arg(short='F', long="files", help="The files to search")]
+    #[arg(short = 'F', long = "files", help = "The files to search")]
     files: Option<Vec<String>>,
-    #[arg(short='d', long="directory", help="The directory to recursively search")]
+    #[arg(short = 'd', long = "directory", help = "The directory to recursively search")]
     directory: Option<String>,
-    #[arg(short='i', 
-        long="ignore-case", 
-        default_value="false",
-        help="Ignore case distinctions")]
+    #[arg(
+        short = 'i',
+        long = "ignore-case",
+        default_value = "false",
+        help = "Ignore case distinctions"
+    )]
     ignore_case: bool,
-    #[arg(short='R',
-        long="recursive",
-        default_value="false",
-        help="Search directories recursively")]
+    #[arg(
+        short = 'R',
+        long = "recursive",
+        default_value = "false",
+        help = "Search directories recursively"
+    )]
     recursive: bool,
-    #[arg(short='n',
-        long="line-number",
-        default_value="false",
-        help="Show line numbers with output lines")]
+    #[arg(
+        short = 'n',
+        long = "line-number",
+        default_value = "false",
+        help = "Show line numbers with output lines"
+    )]
     line_number: bool,
-    #[arg(short='v',
-        long="invert-match",
-        default_value="false",
-        help="Invert the match")]
-    invert_match: bool 
+    #[arg(short = 'v', long = "invert-match", default_value = "false", help = "Invert the match")]
+    invert_match: bool,
 }
 
 impl Args {
@@ -66,5 +69,4 @@ impl Args {
     pub fn get_invert_match(&self) -> bool {
         self.invert_match
     }
-
 }
